@@ -1,0 +1,68 @@
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { WingBlank, WhiteSpace } from 'antd-mobile';
+import MyHeader from '../../components/MyHeader.js';
+import { Button,Layout} from 'element-react';
+import 'element-theme-default';
+import { createForm } from 'rc-form';
+import PropTypes from 'prop-types';
+
+class AppAudioPlay extends Component {
+
+  constructor(props) {
+      super(props);
+      this.state = {audio_play: props.audio_play||false
+                   };
+  }
+
+  handleRemove(file, fileList) {
+      console.log('remove');
+  }
+
+  handleClickPlay(){
+      var audioNode = ReactDOM.findDOMNode(this.refs.audio);
+      this.props.audioPlayCreate(!this.props.audio_play);
+      if (!this.props.audio_play) {
+            audioNode.play();
+      } else {
+            audioNode.pause();
+      }
+  }
+
+  render() {
+    const const_audio_play_catalog = this.props.audio_play_catalog;
+    const const_audio_play_name = this.props.audio_play_name;
+    const const_audio_play_info = this.props.audio_play_info;
+    const const_audio_play_sequence = this.props.audio_play_sequence;
+   
+    const const_audio_url = global.constants.const_audio_url+"/"+const_audio_play_catalog+"/"+const_audio_play_name+"/"+const_audio_play_sequence;
+    return (
+        <div>
+              <MyHeader myheadertitle={ global.constants.const_app_qrcode_decode_title } />
+              <WingBlank>
+                   <audio 
+                       src={const_audio_url}
+                       preload="metadata" 
+                       controls 
+                   />
+              </WingBlank>
+        </div>
+    );
+  }
+
+  static propTypes = {
+    audio_play: PropTypes.bool,
+    audioPlayCreate: PropTypes.func,
+    audio_play_catalog: PropTypes.string,
+    audioPlayCatalogCreate: PropTypes.func,
+    audio_play_name: PropTypes.string,
+    audioPlayNameCreate: PropTypes.func,
+    audio_play_info: PropTypes.string,
+    audioPlayInfoCreate: PropTypes.func,
+    audio_play_sequence: PropTypes.string,
+    audioPlaySequenceCreate: PropTypes.func,
+  }
+
+}
+const AppAudioPlayWrapper = createForm()(AppAudioPlay);
+export default AppAudioPlayWrapper;
